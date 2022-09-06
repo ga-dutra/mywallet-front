@@ -59,6 +59,8 @@ a {
 body {
   line-height: 1;
   font-family: 'Raleway', sans-serif;
+	font-weight: 400;
+	background-color: #8c11be;
 }
 `;
 
