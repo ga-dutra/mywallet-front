@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function WalletPage() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Header>
@@ -12,11 +14,17 @@ export default function WalletPage() {
       </WalletBoard>
       <MovementWrapper>
         <div>
-          <ion-icon name="add-circle-outline"></ion-icon>
+          <ion-icon
+            onClick={() => navigate(`/mywallet/inflow`)}
+            name="add-circle-outline"
+          ></ion-icon>
           <p>Nova entrada</p>
         </div>
         <div>
-          <ion-icon name="remove-circle-outline"></ion-icon>
+          <ion-icon
+            onClick={() => navigate(`/mywallet/outflow`)}
+            name="remove-circle-outline"
+          ></ion-icon>
           <p>Nova saída</p>
         </div>
       </MovementWrapper>
