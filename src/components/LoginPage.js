@@ -1,0 +1,129 @@
+import styled from "styled-components";
+import logo from "../assets/img/mywallet_logo.svg";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({});
+
+  function sendForm() {}
+
+  function handleForm({ value, name }) {
+    console.log([name], value);
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  }
+
+  return (
+    <Wrapper>
+      <Logo src={logo} alt="My Wallet Logo" />
+      <FormWrapper>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendForm();
+          }}
+        >
+          <input
+            placeholder="E-mail"
+            name="email"
+            type="email"
+            required
+            onChange={(e) => {
+              handleForm({ name: e.target.name, value: e.target.value });
+            }}
+          />
+          <input
+            placeholder="Senha"
+            name="password"
+            type="password"
+            onChange={(e) => {
+              handleForm({ name: e.target.name, value: e.target.value });
+            }}
+          />
+          <button>Entrar</button>
+        </form>
+        <p onClick={() => navigate("/sign-up")}>Primeira vez? Cadastre-se!</p>
+      </FormWrapper>
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: #8c11be;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  margin-top: 120px;
+  margin-bottom: 40px;
+`;
+
+const FormWrapper = styled.div`
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 50px);
+    text-align: center;
+  }
+
+  input {
+    width: 100%;
+    height: 58px;
+    margin-bottom: 12px;
+    background-color: #ffffff;
+    border: solid #ffffff;
+    border-radius: 5px;
+    padding-left: 12px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #000000;
+    word-wrap: break-word;
+  }
+
+  input::placeholder {
+    font-weight: 400;
+    color: #000000;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  button {
+    cursor: pointer;
+    width: 100%;
+    height: 48px;
+    margin-bottom: 32px;
+    border-radius: 5px;
+    background-color: #a328d6;
+    border: 10px solid #a328d6;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  p {
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+  }
+`;
+
+export { Wrapper, FormWrapper };
