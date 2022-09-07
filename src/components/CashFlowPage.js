@@ -10,10 +10,12 @@ export default function CashFlowPage() {
   console.log(cashflow);
   const [form, setForm] = useState({});
 
-  function sendForm() {}
+  function sendForm() {
+    // if(form.)
+  }
 
   function handleForm({ value, name }) {
-    console.log([name], value);
+    console.log(name, value);
     setForm({
       ...form,
       [name]: value,
@@ -40,6 +42,7 @@ export default function CashFlowPage() {
             kind={"money"}
             placeholder="Valor"
             name={cashflow}
+            required={cashflow}
             onChangeText={(e) => {
               console.log(e);
               handleForm({ name: cashflow, value: e });

@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function WalletPage() {
   const navigate = useNavigate();
+  const { userData } = useContext(UserContext);
+  console.log(userData);
   return (
     <Wrapper>
       <Header>

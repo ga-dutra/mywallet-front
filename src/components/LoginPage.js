@@ -1,16 +1,29 @@
 import styled from "styled-components";
 import logo from "../assets/img/mywallet_logo.svg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { postLogin } from "../services/requests";
+import { UserContext } from "../contexts/UserContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({});
+  const { setUserData } = useContext(UserContext);
 
-  function sendForm() {}
+  async function sendForm() {
+    const body = { ...form };
+    console.log(body);
+    try {
+      const result = await postLogin(body);
+      const token = result.data;
+      setUserData({ token });
+      navigate("/mywallet");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   function handleForm({ value, name }) {
-    console.log([name], value);
     setForm({
       ...form,
       [name]: value,

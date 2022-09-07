@@ -3,15 +3,27 @@ import { Wrapper, FormWrapper } from "./LoginPage";
 import logo from "../assets/img/mywallet_logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { postSignUp } from "../services/requests";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({});
 
-  function sendForm() {}
+  async function sendForm() {
+    const body = { ...form };
+    console.log(body);
+
+    try {
+      const result = await postSignUp(body);
+      console.log(result);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data);
+    }
+  }
 
   function handleForm({ value, name }) {
-    console.log([name], value);
     setForm({
       ...form,
       [name]: value,
@@ -57,7 +69,7 @@ export default function SignUpPage() {
           />
           <input
             placeholder="Confirme a senha"
-            name="confirmedPassword"
+            name="repeat_password"
             type="password"
             required
             onChange={(e) => {
