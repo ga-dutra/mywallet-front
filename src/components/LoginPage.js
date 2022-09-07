@@ -15,8 +15,8 @@ export default function LoginPage() {
     console.log(body);
     try {
       const result = await postLogin(body);
-      const token = result.data;
-      setUserData({ token });
+      const token = result.data.token;
+      setUserData({ token: token, name: result.data.name });
       navigate("/mywallet");
     } catch (error) {
       console.error(error);

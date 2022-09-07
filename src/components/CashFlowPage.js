@@ -1,21 +1,58 @@
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormWrapper } from "./LoginPage";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextInputMask from "react-masked-text";
+import { postCashFlow } from "../services/requests";
+import { UserContext } from "../contexts/UserContext";
+
+function dateCheck(date) {
+  console.log(date.slice(3));
+  if (date.length !== 5 || Number(date.slice(3) > 12)) return false;
+
+  if (
+    [1, 3, 5, 7, 8, 10].indexOf(Number(date.slice(3) > 12)) !== -1 &&
+    Number(date.slice(0, 2) > 31)
+  ) {
+    return false;
+  } else if (
+    [4, 6, 9, 11].indexOf(Number(date.slice(3) > 12)) !== -1 &&
+    Number(date.slice(0, 2) > 30)
+  ) {
+    return false;
+  } else if (Number(date.slice(0, 2) > 38)) return false;
+  else return true;
+  // checa o mês: se for 1, 3, 5, 7, 8, 10 ou 12, dia entre 1 e 31, se for 4, 6, 9 ou 11, dia entre 1 e 30, se for 2, dia entre 1 e 28
+}
 
 export default function CashFlowPage() {
   const cashflow = useParams().flow;
   const navigate = useNavigate();
   console.log(cashflow);
   const [form, setForm] = useState({});
+  const { userData } = useContext(UserContext);
 
   function sendForm() {
-    // if(form.)
+    // Date is validated
+    if (!dateCheck(form.date)) {
+      alert("Por favor, digite uma data válida no formato DD/MM");
+      return;
+    }
+
+    const config = {
+      headers: { Authorization: `Bearer ${userData.token}` },
+    };
+    const body = { ...form, flowType: cashflow };
+    try {
+      const result = postCashFlow(body, config);
+      console.log(result);
+      navigate("/mywallet");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleForm({ value, name }) {
-    console.log(name, value);
     setForm({
       ...form,
       [name]: value,
@@ -44,8 +81,7 @@ export default function CashFlowPage() {
             name={cashflow}
             required={cashflow}
             onChangeText={(e) => {
-              console.log(e);
-              handleForm({ name: cashflow, value: e });
+              handleForm({ name: "amount", value: e });
             }}
           />
           <input
@@ -55,6 +91,15 @@ export default function CashFlowPage() {
             required
             onChange={(e) => {
               handleForm({ name: e.target.name, value: e.target.value });
+            }}
+          />
+          <TextInputMask
+            kind={"datetime"}
+            placeholder="Data (dia/mês)"
+            name="date"
+            options={{ format: "DD/MM" }}
+            onChangeText={(e) => {
+              handleForm({ name: "date", value: e });
             }}
           />
           <button>Salvar {cashflow === "inflow" ? "entrada" : "saída"}</button>

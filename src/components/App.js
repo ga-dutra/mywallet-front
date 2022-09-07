@@ -2,7 +2,7 @@ import GlobalStyle from "../styles/globalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
-import WalletPage from "./WalletPage";
+import WalletPage from "./WalletPage/WalletPage";
 import CashFlowPage from "./CashFlowPage";
 import { UserStorage } from "../contexts/UserContext";
 

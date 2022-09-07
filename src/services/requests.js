@@ -12,4 +12,14 @@ function postSignUp(body) {
   return promise;
 }
 
-export { postLogin, postSignUp };
+function getCashFlows(config) {
+  const promise = axios.get(`${url_base}/cashflows`, config, {});
+  return promise;
+}
+
+function postCashFlow(body, config) {
+  const promise = axios.post(`${url_base}/cashflows`, body, config);
+  return promise;
+}
+
+export { postLogin, postSignUp, getCashFlows, postCashFlow };

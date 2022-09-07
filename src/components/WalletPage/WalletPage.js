@@ -1,21 +1,57 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { getCashFlows } from "../../services/requests";
+import CashFlow from "./CashFlow";
 
 export default function WalletPage() {
   const navigate = useNavigate();
-  const { userData } = useContext(UserContext);
+  const { userData, cashFlows, setCashFlows } = useContext(UserContext);
   console.log(userData);
+
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${userData.token}` },
+    };
+    async function fetchData() {
+      try {
+        const cashFlowsList = await getCashFlows(config);
+        console.log(cashFlowsList);
+        setCashFlows(cashFlowsList.data);
+        console.log(cashFlowsList.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+    console.log(cashFlows);
+  }, []);
+
   return (
     <Wrapper>
       <Header>
-        <h1>Olá, fulano</h1>
+        <h1>Olá, {userData.name}</h1>
         <ion-icon name="log-out-outline"></ion-icon>
       </Header>
-      <WalletBoard>
-        <h2>Não há registros de entrada ou saída</h2>
-      </WalletBoard>
+      {cashFlows.length ? (
+        <WalletBoard>
+          {cashFlows.map((item) => (
+            <CashFlow
+              key={item.index}
+              date={item.date}
+              description={item.description}
+              amount={item.amount}
+              flowType={item.flowType}
+            ></CashFlow>
+          ))}{" "}
+        </WalletBoard>
+      ) : (
+        <EmptyWalletBoard>
+          (<h2>Não há registros de entrada ou saída</h2>)
+        </EmptyWalletBoard>
+      )}
+
       <MovementWrapper>
         <div>
           <ion-icon
@@ -60,7 +96,7 @@ const Header = styled.div`
   }
 `;
 
-const WalletBoard = styled.div`
+const EmptyWalletBoard = styled.div`
   margin-bottom: 14px;
   width: calc(100% - 50px);
   height: calc(100vh - 236px);
@@ -77,6 +113,17 @@ const WalletBoard = styled.div`
     font-size: 20px;
     line-height: 24px;
   }
+`;
+
+const WalletBoard = styled.div`
+  margin-bottom: 14px;
+  width: calc(100% - 50px);
+  height: calc(100vh - 236px);
+  background-color: #ffffff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0 0 14px;
 `;
 
 const MovementWrapper = styled.div`
