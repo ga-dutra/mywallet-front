@@ -28,23 +28,47 @@ export default function WalletPage() {
     console.log(cashFlows);
   }, []);
 
+  let balance = 0;
+  cashFlows.forEach((element) => {
+    const amount = Number(
+      element.amount.replace("R$", "").replace(".", "").replace(",", ".")
+    );
+
+    if (element.flowType === "inflow") {
+      balance += amount;
+    } else if (element.flowType === "outflow") {
+      balance -= amount;
+    }
+  });
+
   return (
     <Wrapper>
       <Header>
         <h1>Olá, {userData.name}</h1>
-        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-icon
+          onClick={() => {
+            if (window.confirm("Tem certeza de que deseja sair?")) {
+              alert("saiu");
+            }
+          }}
+          name="log-out-outline"
+        ></ion-icon>
       </Header>
       {cashFlows.length ? (
         <WalletBoard>
           {cashFlows.map((item) => (
             <CashFlow
-              key={item.index}
+              key={item.description}
               date={item.date}
               description={item.description}
               amount={item.amount}
               flowType={item.flowType}
             ></CashFlow>
-          ))}{" "}
+          ))}
+          <Balance balance={balance}>
+            <h2>SALDO</h2>
+            <p>R$ {String(balance).replace("-", "").replace(".", ",")}</p>
+          </Balance>
         </WalletBoard>
       ) : (
         <EmptyWalletBoard>
@@ -124,6 +148,7 @@ const WalletBoard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 18px 0 0 14px;
+  position: relative;
 `;
 
 const MovementWrapper = styled.div`
@@ -153,5 +178,23 @@ const MovementWrapper = styled.div`
     font-size: 18px;
     line-height: 22px;
     width: 30px;
+  }
+`;
+
+const Balance = styled.div`
+  width: calc(100% - 16px);
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  position: absolute;
+  bottom: 14px;
+
+  h2 {
+    font-weight: 700;
+  }
+  p {
+    font-weight: 500;
+    padding-right: 10px;
+    color: ${(props) => (props.balance >= 0 ? "#03AC00" : "#C70000")};
   }
 `;
