@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { getCashFlows } from "../../services/requests";
 import logout from "../../services/logout";
@@ -14,6 +14,7 @@ export default function WalletPage() {
   const config = {
     headers: { Authorization: `Bearer ${userData.token}` },
   };
+  const [render, setRender] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +29,7 @@ export default function WalletPage() {
     }
     fetchData();
     console.log(cashFlows);
-  }, []);
+  }, [render]);
 
   function dateSort(array) {
     array.forEach((value) => {
@@ -82,6 +83,10 @@ export default function WalletPage() {
               description={item.description}
               amount={item.amount}
               flowType={item.flowType}
+              id={item._id}
+              config={config}
+              render={render}
+              setRender={setRender}
             ></CashFlow>
           ))}
           <Balance balance={balance}>
@@ -89,6 +94,12 @@ export default function WalletPage() {
             <p>
               R$ {balance < 0 ? "-" : ""}
               {String(balance).replace("-", "").replace(".", ",")}
+              {String(balance)
+                .replace("-", "")
+                .replace(".", ",")
+                .indexOf(",") === -1
+                ? ",00"
+                : ""}
             </p>
           </Balance>
         </WalletBoard>
@@ -178,7 +189,7 @@ const MovementWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: calc(100% - 50px);
-
+  max-height: calc(100% - 40px);
   div {
     display: flex;
     flex-direction: column;

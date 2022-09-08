@@ -27,8 +27,9 @@ function deleteSession(config) {
   return promise;
 }
 
-function deleteCashFlow() {
-  const promise = "a";
+function deleteCashFlow(id, config) {
+  const promise = axios.delete(`${url_base}/cashflows/${id}`, config);
+  return promise;
 }
 
 function editCashFlow() {}
