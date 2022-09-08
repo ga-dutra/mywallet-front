@@ -32,6 +32,7 @@ const Date = styled.span`
 
 const Description = styled.span`
   color: #000000;
+  line-height: 20px;
 `;
 
 const Amount = styled.span`

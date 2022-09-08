@@ -22,8 +22,9 @@ function postCashFlow(body, config) {
   return promise;
 }
 
-function deleteSession() {
-  const promise = "a";
+function deleteSession(config) {
+  const promise = axios.delete(`${url_base}/logout`, config);
+  return promise;
 }
 
 function deleteCashFlow() {

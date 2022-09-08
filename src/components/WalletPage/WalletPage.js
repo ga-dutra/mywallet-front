@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { getCashFlows } from "../../services/requests";
+import logout from "../../services/logout";
 import CashFlow from "./CashFlow";
 
 export default function WalletPage() {
   const navigate = useNavigate();
-  const { userData, cashFlows, setCashFlows } = useContext(UserContext);
+  const { userData, setUserData, cashFlows, setCashFlows } =
+    useContext(UserContext);
   console.log(userData);
+  const config = {
+    headers: { Authorization: `Bearer ${userData.token}` },
+  };
 
   useEffect(() => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    };
     async function fetchData() {
       try {
         const cashFlowsList = await getCashFlows(config);
@@ -42,18 +44,19 @@ export default function WalletPage() {
   }
 
   let balance = 0;
-  cashFlows.forEach((element) => {
-    const amount = Number(
-      element.amount.replace("R$", "").replace(".", "").replace(",", ".")
-    );
+  if (cashFlows.length) {
+    cashFlows.forEach((element) => {
+      const amount = Number(
+        element.amount.replace("R$", "").replace(".", "").replace(",", ".")
+      );
 
-    if (element.flowType === "inflow") {
-      balance += amount;
-    } else if (element.flowType === "outflow") {
-      balance -= amount;
-    }
-  });
-
+      if (element.flowType === "inflow") {
+        balance += amount;
+      } else if (element.flowType === "outflow") {
+        balance -= amount;
+      }
+    });
+  }
   return (
     <Wrapper>
       <Header>
@@ -61,7 +64,10 @@ export default function WalletPage() {
         <ion-icon
           onClick={() => {
             if (window.confirm("Tem certeza de que deseja sair?")) {
-              alert("saiu");
+              logout(config);
+              setCashFlows({});
+              setUserData({});
+              navigate("/");
             }
           }}
           name="log-out-outline"
@@ -80,12 +86,15 @@ export default function WalletPage() {
           ))}
           <Balance balance={balance}>
             <h2>SALDO</h2>
-            <p>R$ {String(balance).replace("-", "").replace(".", ",")}</p>
+            <p>
+              R$ {balance < 0 ? "-" : ""}
+              {String(balance).replace("-", "").replace(".", ",")}
+            </p>
           </Balance>
         </WalletBoard>
       ) : (
         <EmptyWalletBoard>
-          (<h2>Não há registros de entrada ou saída</h2>)
+          <h2>Não há registros de entrada ou saída</h2>
         </EmptyWalletBoard>
       )}
 
@@ -162,6 +171,7 @@ const WalletBoard = styled.div`
   flex-direction: column;
   padding: 18px 0 0 14px;
   position: relative;
+  overflow: hidden;
 `;
 
 const MovementWrapper = styled.div`
@@ -183,6 +193,7 @@ const MovementWrapper = styled.div`
   ion-icon {
     color: #ffffff;
     font-size: 26px;
+    cursor: pointer;
   }
 
   p {
@@ -198,7 +209,7 @@ const Balance = styled.div`
   width: calc(100% - 16px);
   display: flex;
   justify-content: space-between;
-  font-size: 17px;
+  font-size: 18px;
   position: absolute;
   bottom: 14px;
 
