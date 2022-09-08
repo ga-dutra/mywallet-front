@@ -28,6 +28,19 @@ export default function WalletPage() {
     console.log(cashFlows);
   }, []);
 
+  function dateSort(array) {
+    array.forEach((value) => {
+      value.formatedDate = new Date(
+        value.date.slice(3, 5) + "/" + value.date.slice(0, 2)
+      );
+    });
+    return array.sort((a, b) => {
+      if (a.formatedDate > b.formatedDate) return 1;
+      if (a.formatedDate < b.formatedDate) return -1;
+      return 0;
+    });
+  }
+
   let balance = 0;
   cashFlows.forEach((element) => {
     const amount = Number(
@@ -56,7 +69,7 @@ export default function WalletPage() {
       </Header>
       {cashFlows.length ? (
         <WalletBoard>
-          {cashFlows.map((item) => (
+          {dateSort(cashFlows).map((item) => (
             <CashFlow
               key={item.description}
               date={item.date}

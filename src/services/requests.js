@@ -22,4 +22,22 @@ function postCashFlow(body, config) {
   return promise;
 }
 
-export { postLogin, postSignUp, getCashFlows, postCashFlow };
+function deleteSession() {
+  const promise = "a";
+}
+
+function deleteCashFlow() {
+  const promise = "a";
+}
+
+function editCashFlow() {}
+
+export {
+  postLogin,
+  postSignUp,
+  getCashFlows,
+  postCashFlow,
+  deleteSession,
+  deleteCashFlow,
+  editCashFlow,
+};
