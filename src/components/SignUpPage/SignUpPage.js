@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { Wrapper, FormWrapper } from "./LoginPage";
-import logo from "../assets/img/mywallet_logo.svg";
+import { Wrapper, FormWrapper } from "../LoginPage/LoginPage";
+import logo from "../../assets/img/mywallet_logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postSignUp } from "../services/requests";
+import { postSignUp } from "../../services/requests";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -11,14 +11,12 @@ export default function SignUpPage() {
 
   async function sendForm() {
     const body = { ...form };
-    console.log(body);
 
     try {
-      const result = await postSignUp(body);
-      console.log(result);
+      await postSignUp(body);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert(error.response.data);
     }
   }

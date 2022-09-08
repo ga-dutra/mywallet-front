@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { FormWrapper } from "./LoginPage";
+import { FormWrapper } from "../LoginPage/LoginPage";
 import { useContext, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import TextInputMask from "react-masked-text";
-import { postCashFlow } from "../services/requests";
-import { UserContext } from "../contexts/UserContext";
+import { postCashFlow } from "../../services/requests";
 
 function dateCheck(date) {
-  console.log(date.slice(3));
   if (date.length !== 5 || Number(date.slice(3) > 12)) return false;
 
   if (
@@ -26,13 +25,12 @@ function dateCheck(date) {
 }
 
 export default function CashFlowPage() {
-  const cashflow = useParams().flow;
+  const cashflow = useParams().flow === "entrada" ? "inflow" : "outflow";
   const navigate = useNavigate();
-  console.log(cashflow);
   const [form, setForm] = useState({});
   const { userData } = useContext(UserContext);
 
-  function sendForm() {
+  async function sendForm() {
     // Date is validated
     if (!dateCheck(form.date)) {
       alert("Por favor, digite uma data válida no formato DD/MM");
@@ -44,8 +42,7 @@ export default function CashFlowPage() {
     };
     const body = { ...form, flowType: cashflow };
     try {
-      const result = postCashFlow(body, config);
-      console.log(result);
+      await postCashFlow(body, config);
       navigate("/mywallet");
     } catch (error) {
       console.error(error);
@@ -136,3 +133,5 @@ const Header = styled.div`
     font-size: 30px;
   }
 `;
+
+export { Header };

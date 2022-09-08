@@ -10,7 +10,6 @@ export default function WalletPage() {
   const navigate = useNavigate();
   const { userData, setUserData, cashFlows, setCashFlows } =
     useContext(UserContext);
-  console.log(userData);
   const config = {
     headers: { Authorization: `Bearer ${userData.token}` },
   };
@@ -20,15 +19,12 @@ export default function WalletPage() {
     async function fetchData() {
       try {
         const cashFlowsList = await getCashFlows(config);
-        console.log(cashFlowsList);
         setCashFlows(cashFlowsList.data);
-        console.log(cashFlowsList.data);
       } catch (error) {
         console.error(error);
       }
     }
     fetchData();
-    console.log(cashFlows);
   }, [render]);
 
   function dateSort(array) {
@@ -112,14 +108,14 @@ export default function WalletPage() {
       <MovementWrapper>
         <div>
           <ion-icon
-            onClick={() => navigate(`/mywallet/inflow`)}
+            onClick={() => navigate(`/mywallet/entrada`)}
             name="add-circle-outline"
           ></ion-icon>
           <p>Nova entrada</p>
         </div>
         <div>
           <ion-icon
-            onClick={() => navigate(`/mywallet/outflow`)}
+            onClick={() => navigate(`/mywallet/saída`)}
             name="remove-circle-outline"
           ></ion-icon>
           <p>Nova saída</p>

@@ -1,9 +1,11 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { UserContext } from "../../contexts/UserContext";
 import { deleteCashFlow } from "../../services/requests";
 
 async function deleteFlow(id, config) {
   const result = await deleteCashFlow(id, config);
-  console.log(result);
   return result;
 }
 
@@ -17,10 +19,23 @@ export default function CashFlow({
   render,
   setRender,
 }) {
-  console.log(id);
+  const navigate = useNavigate();
+  const { setEditingCashFlow } = useContext(UserContext);
+
   return (
     <Wrapper>
-      <div>
+      <div
+        onClick={() => {
+          setEditingCashFlow({
+            date: date,
+            description: description,
+            amount: amount,
+            flowType: flowType,
+            id: id,
+          });
+          navigate(`/mywallet/editar/${description}`);
+        }}
+      >
         <Date>{date}</Date> <Description>{description}</Description>
       </div>
       <div>

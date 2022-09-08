@@ -32,7 +32,10 @@ function deleteCashFlow(id, config) {
   return promise;
 }
 
-function editCashFlow() {}
+function editCashFlow(id, config, body) {
+  const promise = axios.put(`${url_base}/cashflows/${id}`, body, config);
+  return promise;
+}
 
 export {
   postLogin,

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import logo from "../assets/img/mywallet_logo.svg";
+import logo from "../../assets/img/mywallet_logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { postLogin } from "../services/requests";
-import { UserContext } from "../contexts/UserContext";
+import { postLogin } from "../../services/requests";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ export default function LoginPage() {
 
   async function sendForm() {
     const body = { ...form };
-    console.log(body);
     try {
       const result = await postLogin(body);
       const token = result.data.token;
