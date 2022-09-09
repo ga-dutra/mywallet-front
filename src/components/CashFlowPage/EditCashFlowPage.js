@@ -95,4 +95,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  div form input::placeholder {
+    color: gray;
+    font-style: italic;
+  }
 `;

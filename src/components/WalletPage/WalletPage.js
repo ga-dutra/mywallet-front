@@ -10,14 +10,14 @@ export default function WalletPage() {
   const navigate = useNavigate();
   const { userData, setUserData, cashFlows, setCashFlows } =
     useContext(UserContext);
-  const config = {
-    headers: { Authorization: `Bearer ${userData.token}` },
-  };
   const [render, setRender] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        const config = {
+          headers: { Authorization: `Bearer ${userData.token}` },
+        };
         const cashFlowsList = await getCashFlows(config);
         setCashFlows(cashFlowsList.data);
       } catch (error) {
@@ -25,7 +25,7 @@ export default function WalletPage() {
       }
     }
     fetchData();
-  }, [render]);
+  }, [render, setCashFlows, userData.token]);
 
   function dateSort(array) {
     array.forEach((value) => {
@@ -61,7 +61,7 @@ export default function WalletPage() {
         <ion-icon
           onClick={() => {
             if (window.confirm("Tem certeza de que deseja sair?")) {
-              logout(config);
+              logout(userData.token);
               setCashFlows({});
               setUserData({});
               navigate("/");
@@ -80,7 +80,6 @@ export default function WalletPage() {
               amount={item.amount}
               flowType={item.flowType}
               id={item._id}
-              config={config}
               render={render}
               setRender={setRender}
             ></CashFlow>

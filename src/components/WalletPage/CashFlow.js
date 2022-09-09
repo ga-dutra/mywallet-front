@@ -4,7 +4,10 @@ import styled from "styled-components";
 import { UserContext } from "../../contexts/UserContext";
 import { deleteCashFlow } from "../../services/requests";
 
-async function deleteFlow(id, config) {
+async function deleteFlow(id, token) {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   const result = await deleteCashFlow(id, config);
   return result;
 }
@@ -15,12 +18,11 @@ export default function CashFlow({
   amount,
   flowType,
   id,
-  config,
   render,
   setRender,
 }) {
   const navigate = useNavigate();
-  const { setEditingCashFlow } = useContext(UserContext);
+  const { setEditingCashFlow, userData } = useContext(UserContext);
 
   return (
     <Wrapper>
@@ -45,7 +47,7 @@ export default function CashFlow({
             if (
               window.confirm(`Tem certeza de que quer apagar '${description}'?`)
             ) {
-              deleteFlow(id, config);
+              deleteFlow(id, userData.token);
               setRender(!render);
             }
           }}
