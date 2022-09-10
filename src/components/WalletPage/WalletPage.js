@@ -44,15 +44,15 @@ export default function WalletPage() {
   if (cashFlows.length) {
     cashFlows.forEach((element) => {
       const amount = Number(
-        element.amount.replace("R$", "").replace(".", "").replace(",", ".")
+        element.amount.replace("R$", "").replaceAll(".", "").replace(",", ".")
       );
-
       if (element.flowType === "inflow") {
         balance += amount;
       } else if (element.flowType === "outflow") {
         balance -= amount;
       }
     });
+    balance = balance.toFixed(2);
   }
   return (
     <Wrapper>
@@ -74,7 +74,7 @@ export default function WalletPage() {
         <WalletBoard>
           {dateSort(cashFlows).map((item) => (
             <CashFlow
-              key={item.description}
+              key={Math.random()}
               date={item.date}
               description={item.description}
               amount={item.amount}

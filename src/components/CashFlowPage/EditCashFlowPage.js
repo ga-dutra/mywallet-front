@@ -24,6 +24,12 @@ export default function EditCashFlowPage() {
       return;
     }
 
+    // Amount is validated
+    if (form.amount.length > 14) {
+      alert("O valor digitado não é válido!");
+      return;
+    }
+
     const config = {
       headers: { Authorization: `Bearer ${userData.token}` },
     };
