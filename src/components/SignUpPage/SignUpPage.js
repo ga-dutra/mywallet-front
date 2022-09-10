@@ -14,10 +14,11 @@ export default function SignUpPage() {
 
     try {
       await postSignUp(body);
+      alert("Usuário criado com sucesso!");
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert(error.response.data);
+      alert(JSON.stringify(error.response.data));
     }
   }
 

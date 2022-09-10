@@ -18,6 +18,7 @@ export default function LoginPage() {
       setUserData({ token: token, name: result.data.name });
       navigate("/mywallet");
     } catch (error) {
+      alert("E-mail ou senha inválido(s)!");
       console.error(error);
     }
   }

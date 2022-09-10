@@ -94,6 +94,7 @@ export default function CashFlowPage() {
             kind={"datetime"}
             placeholder="Data (dia/mês)"
             name="date"
+            required={cashflow}
             options={{ format: "DD/MM" }}
             onChangeText={(e) => {
               handleForm({ name: "date", value: e });
@@ -134,4 +135,4 @@ const Header = styled.div`
   }
 `;
 
-export { Header };
+export { Header, dateCheck };

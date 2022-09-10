@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormWrapper } from "../LoginPage/LoginPage";
-import { Header } from "./CreateCashFlowPage";
+import { Header, dateCheck } from "./CreateCashFlowPage";
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import TextInputMask from "react-masked-text";
 import { editCashFlow } from "../../services/requests";
 
 export default function EditCashFlowPage() {
-  const cashflow = useParams().flow === "entrada" ? "inflow" : "outflow";
   const navigate = useNavigate();
   const { userData, editingCashFlow } = useContext(UserContext);
   const [form, setForm] = useState({
@@ -19,6 +18,12 @@ export default function EditCashFlowPage() {
   });
 
   async function sendForm() {
+    // Date is validated
+    if (!dateCheck(form.date)) {
+      alert("Por favor, digite uma data válida no formato DD/MM");
+      return;
+    }
+
     const config = {
       headers: { Authorization: `Bearer ${userData.token}` },
     };
@@ -40,9 +45,11 @@ export default function EditCashFlowPage() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper type={editingCashFlow.flowType}>
       <Header>
-        <h1>Editar {cashflow === "inflow" ? "entrada" : "saída"}</h1>
+        <h1>
+          Editar {editingCashFlow.flowType === "inflow" ? "entrada" : "saída"}
+        </h1>
         <ion-icon
           onClick={() => navigate("/mywallet")}
           name="arrow-back-circle-outline"
@@ -58,8 +65,8 @@ export default function EditCashFlowPage() {
           <TextInputMask
             kind={"money"}
             placeholder={editingCashFlow.amount}
-            name={cashflow}
-            required={cashflow}
+            name={editingCashFlow.flowType}
+            required={editingCashFlow.flowType}
             onChangeText={(e) => {
               handleForm({ name: "amount", value: e });
             }}
@@ -83,7 +90,8 @@ export default function EditCashFlowPage() {
             }}
           />
           <button>
-            Atualizar {cashflow === "inflow" ? "entrada" : "saída"}
+            Atualizar{" "}
+            {editingCashFlow.flowType === "inflow" ? "entrada" : "saída"}
           </button>
         </form>
       </FormWrapper>
@@ -95,6 +103,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  div form input:nth-child(1) {
+    color: ${(props) => (props.type === "inflow" ? "#03AC00" : "#C70000")};
+  }
 
   div form input::placeholder {
     color: gray;
