@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url_base = "http://localhost:5000";
+const url_base = "https://mywallet-node.herokuapp.com";
 
 function postLogin(body) {
   const promise = axios.post(`${url_base}/auth/login`, body);
