@@ -1,6 +1,27 @@
-# Getting Started with Create React App
+<div align="center">
+  <h1>MyWallet</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  Keep control of your financial life with MyWallet
+  <br>
+</div>
+ <h2>About</h2>
+MyWallet is a fullstack personal expense management application, allowing the user to add income and expenses, as well as a description and date they occurred.
+  <br>
+ <h2>Tecnologies</h2>
+ The following tools and frameworks were used in the construction of the project:
+ <br>
+  <br>
+ <p>
+  
+![Javascript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![ReactJS](https://img.shields.io/badge/ReactJS-13cf35?style=for-the-badge&logo=react&logoColor=080808)
+![Styled-Components](https://img.shields.io/badge/Styled-Components-61DAFB?style=for-the-badge&logo=styledcomponents&logoColor=61DAFB)
+![NodeJS](https://img.shields.io/badge/NodeJS-F7DF1E?style=for-the-badge&logo=node.js&logoColor=080808)
+![TypeScript](https://img.shields.io/badge/TypeScript-E4405F?style=for-the-badge&logo=typescript&logoColor=ffffff)
+![Mongodb](https://img.shields.io/badge/Mongodb-fae7b5?style=for-the-badge&logo=mongodb&logoColor=080808)
+
+</p>
+
 
 ## Available Scripts
 
